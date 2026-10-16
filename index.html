@@ -37,16 +37,10 @@
     filter: drop-shadow(0 0 6px rgba(200, 180, 255, 0.7));
   }
   @keyframes floatUp {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 0;
-    }
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
     10% { opacity: 0.9; }
     90% { opacity: 0.9; }
-    100% {
-      transform: translateY(-110vh) rotate(360deg);
-      opacity: 0;
-    }
+    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
   }
 
   .card {
@@ -295,7 +289,9 @@
 
   <ul class="playlist" id="playlist"></ul>
 
-  <audio id="player" controls preload="none"></audio>
+  <audio id="player" controls preload="auto" playsinline webkit-playsinline>
+    <source src="" type="audio/mpeg">
+  </audio>
 
   <div class="nav">
     <button id="prev" onclick="prev()">← Назад</button>
@@ -325,6 +321,7 @@ let current = 0;
 let photoIndex = 0;
 let currentSong = 0;
 let autoTimer = null;
+let audioUnlocked = false;
 
 const photoEl      = document.getElementById("photo");
 const photoWrap    = document.getElementById("photoWrap");
@@ -337,6 +334,34 @@ const playerEl     = document.getElementById("player");
 const prevBtn      = document.getElementById("prev");
 const nextBtn      = document.getElementById("next");
 const counterEl    = document.getElementById("counter");
+
+// ============ РАЗБЛОКИРОВКА ЗВУКА (Android + iPhone) ============
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+
+  // 1. Пустой звук — универсальная разблокировка
+  const silent = new Audio();
+  silent.volume = 0;
+  silent.play().then(() => silent.pause()).catch(() => {});
+
+  // 2. Прогреваем основной плеер
+  try {
+    playerEl.muted = true;
+    playerEl.play().then(() => {
+      playerEl.pause();
+      playerEl.currentTime = 0;
+      playerEl.muted = false;
+    }).catch(() => {
+      playerEl.muted = false;
+    });
+  } catch(e) {}
+}
+
+document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+document.addEventListener('touchend', unlockAudio, { once: true, passive: true });
+document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('keydown', unlockAudio, { once: true });
 
 function render() {
   const s = students[current];
@@ -402,7 +427,8 @@ function renderPlaylist() {
       currentSong = i;
       playerEl.src = song.file;
       playerEl.load();
-      playerEl.play();
+      playerEl.muted = false;
+      playerEl.play().catch(() => {});
       renderPlaylist();
     };
     playlistEl.appendChild(li);
