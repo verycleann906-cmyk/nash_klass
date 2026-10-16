@@ -21,7 +21,6 @@
     position: relative;
   }
 
-  /* ============ ЛЕТЯЩИЕ ЧАСТИЦЫ ============ */
   .particles {
     position: fixed;
     inset: 0;
@@ -50,7 +49,6 @@
     }
   }
 
-  /* ============ КАРТОЧКА ============ */
   .card {
     background: rgba(10, 6, 24, 0.7);
     border: 1px solid rgba(140, 160, 255, 0.3);
@@ -65,7 +63,6 @@
     z-index: 1;
   }
 
-  /* ============ ФОТО ============ */
   .photo-row {
     display: flex;
     align-items: center;
@@ -152,37 +149,28 @@
     box-shadow: 0 0 18px rgba(160, 180, 255, 0.7);
   }
 
-  /* ============ ТЕКСТ ============ */
   .name {
-    font-size: 26px;
+    font-size: clamp(15px, 5.5vw, 26px);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #c8d4ff;
     letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .heart-icon {
-    color: #ff7ba8;
-    font-size: 20px;
-    animation: pulse 1.6s ease-in-out infinite;
-    filter: drop-shadow(0 0 8px rgba(255, 120, 170, 0.7));
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.25); }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .quote {
     font-style: italic;
     text-align: center;
-    color: #d8d8ee;
-    font-size: 15px;
-    line-height: 1.6;
-    margin-bottom: 14px;
-    padding: 0 8px;
+    color: #ffffff;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    padding: 8px 12px;
+    text-shadow: 0 0 12px rgba(160, 180, 255, 0.6),
+                 0 0 4px rgba(200, 180, 255, 0.4);
   }
   .quote::before { content: "«"; color: #a8bbff; }
   .quote::after  { content: "»"; color: #a8bbff; }
@@ -206,7 +194,6 @@
     margin-bottom: 6px;
   }
 
-  /* ============ ПЛЕЙЛИСТ ============ */
   .playlist {
     list-style: none;
     margin-bottom: 18px;
@@ -255,7 +242,6 @@
     filter: invert(0.88) hue-rotate(210deg) saturate(1.6);
   }
 
-  /* ============ НАВИГАЦИЯ ============ */
   .nav { display: flex; gap: 10px; }
   .nav button {
     flex: 1;
@@ -299,10 +285,7 @@
 
   <div class="thumbs" id="thumbs"></div>
 
-  <div class="name">
-    <span id="name"></span>
-    <span class="heart-icon">❤</span>
-  </div>
+  <div class="name" id="name"></div>
   <div class="quote" id="quote"></div>
 
   <div class="wish">
@@ -331,8 +314,8 @@ const students = [
     photos: ["img/1.jpg", "img/1b.jpg", "img/1c.jpg"],
     songs: [
       { title: "80soperl — Runaway Runaway", file: "music/1.mp3" },
-      { title: "Иван Дорн — Стыцамен", file: "music/1c.mp3" },
-      { title: "Blood Orange — Champagne Coast", file: "music/1b.mp3" }
+      { title: "Иван Дорн — Стыцамен", file: "music/1b.mp3" },
+      { title: "Blood Orange — Champagne Coast", file: "music/1c.mp3" }
     ],
     bg: "url('img/bg-1.jpg') center/cover no-repeat fixed"
   }
